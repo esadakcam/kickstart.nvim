@@ -52,6 +52,10 @@ return {
         position = 'right',
         mappings = {
           ['\\'] = 'close_window',
+          ['O'] = function(state)
+            require('neo-tree.sources.filesystem.commands').open(state)
+            vim.cmd('wincmd p')
+          end,
         },
       },
     },
