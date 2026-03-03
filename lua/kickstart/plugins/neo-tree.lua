@@ -29,6 +29,19 @@ return {
       silent = true,
     },
   },
+  config = function(_, opts)
+    -- Auto-refresh neo-tree when files change on disk
+    vim.api.nvim_create_autocmd('FocusGained', {
+      group = vim.api.nvim_create_augroup('neo-tree-refresh', { clear = true }),
+      callback = function()
+        local manager_avail, manager = pcall(require, 'neo-tree.sources.manager')
+        if manager_avail then
+          pcall(manager.refresh, 'filesystem')
+        end
+      end,
+    })
+    require('neo-tree').setup(opts)
+  end,
   ---@module 'neo-tree'
   ---@type neotree.Config
   opts = {
@@ -48,6 +61,7 @@ return {
       },
     },
     filesystem = {
+      use_libuv_file_watcher = true,
       filtered_items = {
         visible = true,
         hide_dotfiles = false,
