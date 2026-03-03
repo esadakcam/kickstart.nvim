@@ -924,9 +924,8 @@ require('lazy').setup({
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter-intro`
     config = function()
       local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
-      require('nvim-treesitter.configs').setup {
-        ensure_installed = parsers,
-      }
+      local treesitter = require 'nvim-treesitter'
+      treesitter.install(parsers)
       vim.api.nvim_create_autocmd('FileType', {
         callback = function(args)
           local buf, filetype = args.buf, args.match
@@ -934,10 +933,10 @@ require('lazy').setup({
           local language = vim.treesitter.language.get_lang(filetype)
           if not language then return end
 
-          -- check if parser exists and load it
-          if not vim.treesitter.language.add(language) then return end
-          -- enables syntax highlighting and other treesitter features
-          vim.treesitter.start(buf, language)
+          local ok = pcall(vim.treesitter.language.add, language)
+          if not ok then return end
+          local ok2 = pcall(vim.treesitter.start, buf, language)
+          if not ok2 then return end
 
           -- enables treesitter based folds
           -- for more info on folds see `:help folds`
@@ -945,7 +944,7 @@ require('lazy').setup({
           -- vim.wo.foldmethod = 'expr'
 
           -- enables treesitter based indentation
-          vim.bo.indentexpr = 'nvim_treesitter#indent()'
+          vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         end,
       })
     end,
