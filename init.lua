@@ -175,9 +175,7 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<D-s>', '<cmd>write<CR>', { desc = 'Format and save current file' })
 vim.keymap.set('i', '<D-s>', '<Esc><cmd>write<CR>a', { desc = 'Format and save current file' })
 vim.keymap.set('v', '<D-s>', '<Esc><cmd>write<CR>', { desc = 'Format and save current file' })
-vim.keymap.set('n', '<C-s>', '<cmd>write<CR>', { desc = 'Format and save current file' })
-vim.keymap.set('i', '<C-s>', '<Esc><cmd>write<CR>a', { desc = 'Format and save current file' })
-vim.keymap.set('v', '<C-s>', '<Esc><cmd>write<CR>', { desc = 'Format and save current file' })
+vim.keymap.set('n', '<leader>s', '<cmd>write<CR>', { desc = '[S]ave file' })
 
 -- Diagnostic Config & Keymaps
 -- See :help vim.diagnostic.Opts
