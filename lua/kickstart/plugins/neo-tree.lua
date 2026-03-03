@@ -60,6 +60,7 @@ return {
       window = {
         position = 'right',
         mappings = {
+          ['backspace'] = 'noop',
           ['\\'] = 'close_window',
           ['O'] = function(state)
             require('neo-tree.sources.filesystem.commands').open(state)
