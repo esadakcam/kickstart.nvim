@@ -172,7 +172,12 @@ vim.o.confirm = true
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
-vim.keymap.set({ 'n', 'i', 'v' }, '<D-s>', function() vim.cmd 'update' end, { desc = 'Save current file' })
+vim.keymap.set('n', '<D-s>', '<cmd>write<CR>', { desc = 'Format and save current file' })
+vim.keymap.set('i', '<D-s>', '<Esc><cmd>write<CR>a', { desc = 'Format and save current file' })
+vim.keymap.set('v', '<D-s>', '<Esc><cmd>write<CR>', { desc = 'Format and save current file' })
+vim.keymap.set('n', '<C-s>', '<cmd>write<CR>', { desc = 'Format and save current file' })
+vim.keymap.set('i', '<C-s>', '<Esc><cmd>write<CR>a', { desc = 'Format and save current file' })
+vim.keymap.set('v', '<C-s>', '<Esc><cmd>write<CR>', { desc = 'Format and save current file' })
 
 -- Diagnostic Config & Keymaps
 -- See :help vim.diagnostic.Opts
@@ -696,7 +701,7 @@ require('lazy').setup({
 
   { -- Autoformat
     'stevearc/conform.nvim',
-    event = { 'BufWritePre' },
+    event = { 'BufReadPre', 'BufNewFile' },
     cmd = { 'ConformInfo' },
     keys = {
       {
@@ -709,7 +714,7 @@ require('lazy').setup({
     ---@module 'conform'
     ---@type conform.setupOpts
     opts = {
-      notify_on_error = false,
+      notify_on_error = true,
       format_on_save = function(bufnr)
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
@@ -719,7 +724,7 @@ require('lazy').setup({
           return nil
         else
           return {
-            timeout_ms = 500,
+            timeout_ms = 2000,
             lsp_format = 'fallback',
           }
         end
