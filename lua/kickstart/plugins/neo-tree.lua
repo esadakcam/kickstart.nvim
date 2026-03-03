@@ -48,6 +48,10 @@ return {
       },
     },
     filesystem = {
+      follow_current_file = {
+        enabled = true,
+        leave_dirs_open = true,
+      },
       window = {
         position = 'right',
         mappings = {
@@ -56,6 +60,15 @@ return {
             require('neo-tree.sources.filesystem.commands').open(state)
             vim.cmd('wincmd p')
           end,
+          ['Y'] = {
+            function(state)
+              local node = state.tree:get_node()
+              local path = node:get_id()
+              vim.fn.setreg('+', path)
+              vim.notify('Copied: ' .. path)
+            end,
+            desc = 'Copy path to clipboard',
+          },
         },
       },
     },
