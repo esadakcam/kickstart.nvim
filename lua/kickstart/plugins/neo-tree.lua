@@ -32,6 +32,21 @@ return {
   ---@module 'neo-tree'
   ---@type neotree.Config
   opts = {
+    default_component_configs = {
+      git_status = {
+        symbols = {
+          added = 'A',
+          deleted = 'D',
+          modified = 'M',
+          renamed = 'R',
+          untracked = '?',
+          ignored = 'I',
+          unstaged = 'U',
+          staged = 'S',
+          conflict = '!',
+        },
+      },
+    },
     filesystem = {
       window = {
         position = 'right',
