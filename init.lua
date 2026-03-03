@@ -259,6 +259,20 @@ require('lazy').setup({
   {
     'sindrets/diffview.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
+    keys = {
+      {
+        '<leader>7',
+        function()
+          local ok, lib = pcall(require, 'diffview.lib')
+          if ok and lib.get_current_view and lib.get_current_view() then
+            vim.cmd 'DiffviewClose'
+          else
+            vim.cmd 'DiffviewOpen'
+          end
+        end,
+        desc = 'Git: Toggle Diffview',
+      },
+    },
     config = function() require('diffview').setup() end,
   },
   { 'NMAC427/guess-indent.nvim', opts = {} },
