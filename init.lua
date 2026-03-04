@@ -1018,6 +1018,16 @@ require('lazy').setup({
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
+  {
+    'mg979/vim-visual-multi',
+    init = function()
+      vim.g.VM_maps = {
+        ['Find Under'] = '<C-S-d>',
+        ['Find Subword Under'] = '<C-S-d>',
+      }
+    end,
+  },
+
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
