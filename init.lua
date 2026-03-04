@@ -285,7 +285,69 @@ require('lazy').setup({
         desc = 'Git: Toggle Diffview',
       },
     },
-    config = function() require('diffview').setup() end,
+    config = function()
+      local actions = require 'diffview.actions'
+
+      local function apply_diff_hl()
+        vim.api.nvim_set_hl(0, 'DiffAdd', { bg = '#1e3a2a' })
+        vim.api.nvim_set_hl(0, 'DiffDelete', { bg = '#4b1818' })
+        vim.api.nvim_set_hl(0, 'DiffChange', { bg = '#1a2a40' })
+        vim.api.nvim_set_hl(0, 'DiffText', { bg = '#2a4a5a' })
+        vim.api.nvim_set_hl(0, 'DiffviewDiffAdd', { bg = '#1e3a2a' })
+        vim.api.nvim_set_hl(0, 'DiffviewDiffAddAsDelete', { bg = '#4b1818' })
+        vim.api.nvim_set_hl(0, 'DiffviewDiffChange', { bg = '#1a2a40' })
+        vim.api.nvim_set_hl(0, 'DiffviewDiffText', { bg = '#2a4a5a' })
+        vim.api.nvim_set_hl(0, 'DiffviewDiffDelete', { fg = '#444444', bg = '#2c1111' })
+      end
+
+      require('diffview').setup {
+        enhanced_diff_hl = true,
+        show_help_hints = false,
+        view = {
+          default = {
+            layout = 'diff2_horizontal',
+            winbar_info = true,
+          },
+          file_history = {
+            layout = 'diff2_horizontal',
+            winbar_info = true,
+          },
+          merge_tool = {
+            layout = 'diff3_horizontal',
+            disable_diagnostics = true,
+            winbar_info = true,
+          },
+        },
+        file_panel = {
+          listing_style = 'tree',
+          tree_options = {
+            flatten_dirs = true,
+            folder_statuses = 'only_folded',
+          },
+          win_config = {
+            position = 'left',
+            width = 35,
+          },
+        },
+        hooks = {
+          view_opened = function() apply_diff_hl() end,
+        },
+        keymaps = {
+          view = {
+            { 'n', '<leader>tl', actions.toggle_files, { desc = 'Toggle file panel' } },
+          },
+          file_panel = {
+            { 'n', '<leader>tl', actions.toggle_files, { desc = 'Toggle file panel' } },
+          },
+        },
+      }
+
+      apply_diff_hl()
+      vim.api.nvim_create_autocmd('ColorScheme', {
+        group = vim.api.nvim_create_augroup('diffview-colors', { clear = true }),
+        callback = apply_diff_hl,
+      })
+    end,
   },
   { 'NMAC427/guess-indent.nvim', opts = {} },
 
