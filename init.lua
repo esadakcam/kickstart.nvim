@@ -752,6 +752,7 @@ require('lazy').setup({
         lua = { 'stylua' },
         typescript = { 'prettierd', 'prettier', stop_after_first = true },
         typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
+        markdown = { 'prettierd', 'prettier', stop_after_first = true },
         go = { 'goimports', 'gofumpt' },
         ['yaml.ansible'] = { 'ansible-lint' },
         -- Conform can also run multiple formatters sequentially
