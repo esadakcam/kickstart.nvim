@@ -332,14 +332,6 @@ require('lazy').setup({
         hooks = {
           view_opened = function() apply_diff_hl() end,
         },
-        keymaps = {
-          view = {
-            { 'n', '<leader>tl', actions.toggle_files, { desc = 'Toggle file panel' } },
-          },
-          file_panel = {
-            { 'n', '<leader>tl', actions.toggle_files, { desc = 'Toggle file panel' } },
-          },
-        },
       }
 
       apply_diff_hl()
