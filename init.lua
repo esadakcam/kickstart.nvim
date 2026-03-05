@@ -325,7 +325,7 @@ require('lazy').setup({
             folder_statuses = 'only_folded',
           },
           win_config = {
-            position = 'left',
+            position = 'right',
             width = 35,
           },
         },
