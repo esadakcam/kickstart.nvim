@@ -59,6 +59,14 @@ return {
           conflict = '!',
         },
       },
+      diagnostics = {
+        symbols = {
+          hint = '',
+          info = '',
+          warn = '',
+          error = '',
+        },
+      },
     },
     filesystem = {
       use_libuv_file_watcher = true,
