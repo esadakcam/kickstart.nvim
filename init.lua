@@ -11,8 +11,8 @@ vim.o.relativenumber = true
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
 
--- Don't show the mode, since it's already in the status line
-vim.o.showmode = false
+-- Keep the built-in mode display enabled so floating terminals still show insert/normal state.
+vim.o.showmode = true
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
@@ -224,6 +224,45 @@ require('lazy').setup({
         callback = apply_diff_hl,
       })
     end,
+  },
+  {
+    'akinsho/toggleterm.nvim',
+    version = '*',
+    keys = {
+      {
+        '<leader>tt',
+        function() vim.cmd '1ToggleTerm direction=float' end,
+        mode = { 'n', 't' },
+        desc = '[T]oggle floating [T]erminal 1',
+      },
+      {
+        '<leader>t2',
+        function() vim.cmd '2ToggleTerm direction=float' end,
+        mode = { 'n', 't' },
+        desc = '[T]oggle floating terminal [2]',
+      },
+      {
+        '<leader>t3',
+        function() vim.cmd '3ToggleTerm direction=float' end,
+        mode = { 'n', 't' },
+        desc = '[T]oggle floating terminal [3]',
+      },
+    },
+    opts = {
+      direction = 'float',
+      shade_terminals = false,
+      float_opts = {
+        border = 'rounded',
+        width = function()
+          local max_width = math.max(vim.o.columns - 4, 1)
+          return math.min(math.max(math.floor(vim.o.columns * 0.9), 80), max_width)
+        end,
+        height = function()
+          local max_height = math.max(vim.o.lines - 4, 1)
+          return math.min(math.max(math.floor(vim.o.lines * 0.85), 20), max_height)
+        end,
+      },
+    },
   },
   { 'NMAC427/guess-indent.nvim', opts = {} },
 
