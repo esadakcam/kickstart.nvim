@@ -75,6 +75,9 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter' }, {
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
+vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Exit insert mode' })
+vim.keymap.set('i', 'kj', '<Esc>', { desc = 'Exit insert mode' })
+
 vim.keymap.set('n', '<D-s>', '<cmd>write<CR>', { desc = 'Format and save current file' })
 vim.keymap.set('i', '<D-s>', '<Esc><cmd>write<CR>a', { desc = 'Format and save current file' })
 vim.keymap.set('v', '<D-s>', '<Esc><cmd>write<CR>', { desc = 'Format and save current file' })
@@ -104,6 +107,8 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- Keep `<C-g>` as an alternative for setups where it is available.
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 vim.keymap.set('t', '<C-g>', '<C-\\><C-n>', { desc = 'Exit terminal mode (Ctrl-g)' })
+vim.keymap.set('t', 'jk', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+vim.keymap.set('t', 'kj', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
