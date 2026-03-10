@@ -84,6 +84,7 @@ return {
         mappings = {
           ['<bs>'] = 'noop',
           ['\\'] = 'close_window',
+          ['s'] = 'open_vsplit',
           ['O'] = function(state)
             require('neo-tree.sources.filesystem.commands').open(state)
             vim.cmd('wincmd p')

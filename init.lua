@@ -394,7 +394,7 @@ require('lazy').setup({
           mappings = {
             n = {
               ['t'] = actions.select_tab,
-              ['s'] = actions.select_horizontal,
+              ['s'] = actions.select_vertical,
             },
           },
           file_ignore_patterns = {
