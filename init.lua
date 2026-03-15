@@ -270,6 +270,12 @@ require('lazy').setup({
         mode = { 'n', 't' },
         desc = '[T]oggle floating terminal [5]',
       },
+      {
+        '<leader>tq',
+        function() vim.cmd 'ToggleTerm direction=float' end,
+        mode = { 'n', 't' },
+        desc = '[T]oggle last open terminal',
+      },
     },
     opts = {
       direction = 'float',
