@@ -241,6 +241,12 @@ require('lazy').setup({
         desc = '[T]oggle floating [T]erminal 1',
       },
       {
+        '<leader>t1',
+        function() vim.cmd '1ToggleTerm direction=float' end,
+        mode = { 'n', 't' },
+        desc = '[T]oggle floating [T]erminal 1',
+      },
+      {
         '<leader>t2',
         function() vim.cmd '2ToggleTerm direction=float' end,
         mode = { 'n', 't' },
@@ -251,6 +257,18 @@ require('lazy').setup({
         function() vim.cmd '3ToggleTerm direction=float' end,
         mode = { 'n', 't' },
         desc = '[T]oggle floating terminal [3]',
+      },
+      {
+        '<leader>t4',
+        function() vim.cmd '4ToggleTerm direction=float' end,
+        mode = { 'n', 't' },
+        desc = '[T]oggle floating terminal [4]',
+      },
+      {
+        '<leader>t5',
+        function() vim.cmd '5ToggleTerm direction=float' end,
+        mode = { 'n', 't' },
+        desc = '[T]oggle floating terminal [5]',
       },
     },
     opts = {
