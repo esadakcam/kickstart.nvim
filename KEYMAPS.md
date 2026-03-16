@@ -179,6 +179,14 @@ Toggles:
 |------|------|-------------|
 | `<C-S-d>` | n | Select the word under the cursor and add a virtual cursor; repeat to select additional occurrences |
 
+## Markdown (render-markdown.nvim)
+
+| Keys | Mode | Description |
+|------|------|-------------|
+| `<leader>tm` | n | Toggle rendered Markdown view in the current buffer |
+
+Markdown buffers render automatically in normal, command, and terminal modes. Insert and visual editing still show the raw Markdown text.
+
 ## Completion (blink.cmp, `super-tab` preset)
 
 These mappings are active in insert/command mode when the completion menu is visible.
