@@ -709,6 +709,7 @@ require('lazy').setup({
         'gofumpt',
         'ansible-lint',
         'yamllint',
+        'latexindent',
       })
 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
@@ -762,6 +763,8 @@ require('lazy').setup({
         html = { 'prettierd', 'prettier', stop_after_first = true },
         yaml = { 'prettierd', 'prettier', stop_after_first = true },
         ['yaml.ansible'] = { 'ansible-lint' },
+        tex = { 'latexindent' },
+        latex = { 'latexindent' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
