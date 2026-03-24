@@ -456,12 +456,8 @@ require('lazy').setup({
       local builtin = require 'telescope.builtin'
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
-      vim.keymap.set({ 'n', 'v' }, '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
-      vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader>sc', builtin.commands, { desc = '[S]earch [C]ommands' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
@@ -523,8 +519,6 @@ require('lazy').setup({
         { desc = '[S]earch [/] in Open Files' }
       )
 
-      -- Shortcut for searching your Neovim configuration files
-      vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = '[S]earch [N]eovim files' })
     end,
   },
 
@@ -1007,6 +1001,38 @@ require('lazy').setup({
   -- require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+
+  {
+    'dmtrKovalenko/fff.nvim',
+    build = function()
+      require('fff.download').download_or_build_binary()
+    end,
+    opts = {},
+    lazy = false,
+    keys = {
+      {
+        '<leader>sf',
+        function() require('fff').find_files() end,
+        desc = '[S]earch [F]iles',
+      },
+      {
+        '<leader>sg',
+        function() require('fff').live_grep() end,
+        desc = '[S]earch by [G]rep',
+      },
+      {
+        '<leader>sw',
+        function() require('fff').live_grep({ query = vim.fn.expand '<cword>' }) end,
+        mode = { 'n', 'v' },
+        desc = '[S]earch current [W]ord',
+      },
+      {
+        '<leader>sn',
+        function() require('fff').find_files_in_dir(vim.fn.stdpath 'config') end,
+        desc = '[S]earch [N]eovim files',
+      },
+    },
+  },
 
   {
     'mg979/vim-visual-multi',
