@@ -119,6 +119,14 @@ Files are also auto-formatted on save (except C/C++).
 |------|------|-------------|
 | `<leader>7` | n | Toggle the Diffview panel (shows all uncommitted changes side-by-side) |
 
+### Diffview file panel mappings (inside the file panel)
+
+| Keys | Mode | Description |
+|------|------|-------------|
+| `s` | x | Stage / unstage selected entries |
+| `-` | x | Stage / unstage selected entries |
+| `X` | x | Restore selected entries |
+
 ## Git — Hunks (gitsigns, buffer-local)
 
 Navigation:

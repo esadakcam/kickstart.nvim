@@ -177,6 +177,8 @@ require('lazy').setup({
     config = function()
       local actions = require 'diffview.actions'
 
+      local dv_actions = require 'custom.diffview-actions'
+
       local function apply_diff_hl()
         vim.api.nvim_set_hl(0, 'DiffAdd', { bg = '#1e3a2a' })
         vim.api.nvim_set_hl(0, 'DiffDelete', { bg = '#4b1818' })
@@ -216,6 +218,13 @@ require('lazy').setup({
           win_config = {
             position = 'right',
             width = 35,
+          },
+        },
+        keymaps = {
+          file_panel = {
+            { 'x', 's', dv_actions.visual_toggle_stage, { desc = 'Stage / unstage selected entries' } },
+            { 'x', '-', dv_actions.visual_toggle_stage, { desc = 'Stage / unstage selected entries' } },
+            { 'x', 'X', dv_actions.visual_restore_entry, { desc = 'Restore selected entries' } },
           },
         },
         hooks = {
