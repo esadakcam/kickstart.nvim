@@ -70,10 +70,23 @@ return {
     },
     filesystem = {
       use_libuv_file_watcher = true,
+      find_args = function(cmd, path, search_term, args)
+        if cmd == 'fd' then
+          table.insert(args, '--exclude')
+          table.insert(args, '.git')
+          table.insert(args, '--exclude')
+          table.insert(args, 'node_modules')
+        end
+        return args
+      end,
       filtered_items = {
         visible = true,
         hide_dotfiles = false,
         hide_gitignored = false,
+        hide_by_name = {
+          '.git',
+          'node_modules',
+        },
       },
       follow_current_file = {
         enabled = true,
