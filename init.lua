@@ -709,6 +709,7 @@ require('lazy').setup({
         'gofumpt',
         'ansible-lint',
         'yamllint',
+        'yamlfix',
         'latexindent',
       })
 
@@ -751,6 +752,28 @@ require('lazy').setup({
           }
         end
       end,
+      formatters = {
+        yamlfix = {
+          env = {
+            YAMLFIX_LINE_LENGTH = '0',
+          },
+          cwd = function(self, ctx)
+            return require('conform.util').root_file({
+              '.yamllint',
+              '.yamllint.yml',
+              '.yamllint.yaml',
+            })(self, ctx)
+          end,
+        },
+        yaml_brace_spacer = {
+          command = 'perl',
+          args = {
+            '-pe',
+            [=[s/\[ *\]/[ ]/g; s/\[ +([^ \]])/[$1/g; s/([^ \[]) +\]/$1]/g; s/(?<!\{)\{(?!\{) *([^ }])/{ $1/g; s/([^ {]) *(?<!\})\}(?!\})/$1 }/g; s/(?<!\{)\{(?!\{) *\}(?!\})/{ }/g;]=],
+          },
+          stdin = true,
+        },
+      },
       formatters_by_ft = {
         lua = { 'stylua' },
         json = { 'prettierd', 'prettier', stop_after_first = true },
@@ -761,8 +784,8 @@ require('lazy').setup({
         markdown = { 'prettierd', 'prettier', stop_after_first = true },
         go = { 'goimports', 'gofumpt' },
         html = { 'prettierd', 'prettier', stop_after_first = true },
-        yaml = { 'prettierd', 'prettier', stop_after_first = true },
-        ['yaml.ansible'] = { 'ansible-lint' },
+        yaml = { 'yamlfix', 'yaml_brace_spacer' },
+        ['yaml.ansible'] = { 'yamlfix', 'yaml_brace_spacer' },
         tex = { 'latexindent' },
         latex = { 'latexindent' },
         -- Conform can also run multiple formatters sequentially
@@ -1003,7 +1026,7 @@ require('lazy').setup({
   --
   -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
