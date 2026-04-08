@@ -119,6 +119,20 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- Paste in visual mode without overwriting the default register
+vim.keymap.set('x', 'p', function()
+  local saved = vim.fn.getreg '"'
+  local saved_type = vim.fn.getregtype '"'
+  vim.cmd 'normal! "dd'
+  vim.fn.setreg('"', saved, saved_type)
+  vim.cmd 'normal! P'
+end, { desc = 'Paste without overwriting register, deleted text goes to "d register' })
+
+-- Delete/change send to register "d" instead of default, keeping yanked content safe
+vim.keymap.set({ 'n', 'v' }, 'd', '"dd', { desc = 'Delete into "d register' })
+vim.keymap.set('n', 'dd', '"ddd', { desc = 'Delete line into "d register' })
+vim.keymap.set({ 'n', 'v' }, 'x', '"dx', { desc = 'Delete char into "d register' })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -767,11 +781,11 @@ require('lazy').setup({
             YAMLFIX_LINE_LENGTH = '0',
           },
           cwd = function(self, ctx)
-            return require('conform.util').root_file({
+            return require('conform.util').root_file {
               '.yamllint',
               '.yamllint.yml',
               '.yamllint.yaml',
-            })(self, ctx)
+            }(self, ctx)
           end,
         },
         yaml_brace_spacer = {
