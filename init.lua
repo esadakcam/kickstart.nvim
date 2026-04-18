@@ -83,6 +83,42 @@ vim.keymap.set('i', '<D-s>', '<Esc><cmd>write<CR>a', { desc = 'Format and save c
 vim.keymap.set('v', '<D-s>', '<Esc><cmd>write<CR>', { desc = 'Format and save current file' })
 vim.keymap.set('n', '<leader>w', '<cmd>write<CR>', { desc = '[W]rite/save file' })
 
+-- Convenience LSP commands (removed from nvim-lspconfig; Neovim 0.11+ native API has no command equivalents)
+vim.api.nvim_create_user_command('LspInfo', function()
+  vim.cmd 'checkhealth vim.lsp'
+end, { desc = 'Show LSP client info via checkhealth' })
+
+vim.api.nvim_create_user_command('LspRestart', function()
+  local clients = vim.lsp.get_clients { bufnr = 0 }
+  if #clients == 0 then
+    vim.notify('No LSP clients attached to this buffer', vim.log.levels.WARN)
+    return
+  end
+  local names = {}
+  for _, c in ipairs(clients) do
+    table.insert(names, c.name)
+    vim.lsp.stop_client(c.id)
+  end
+  vim.defer_fn(function()
+    for _, name in ipairs(names) do
+      vim.lsp.enable(name)
+    end
+    vim.notify('Restarted: ' .. table.concat(names, ', '))
+  end, 200)
+end, { desc = 'Restart LSP clients attached to the current buffer' })
+
+vim.api.nvim_create_user_command('LspStop', function()
+  local clients = vim.lsp.get_clients { bufnr = 0 }
+  if #clients == 0 then
+    vim.notify('No LSP clients attached to this buffer', vim.log.levels.WARN)
+    return
+  end
+  for _, c in ipairs(clients) do
+    vim.lsp.stop_client(c.id)
+    vim.notify('Stopped: ' .. c.name)
+  end
+end, { desc = 'Stop LSP clients attached to the current buffer' })
+
 -- Diagnostic Config & Keymaps
 -- See :help vim.diagnostic.Opts
 vim.diagnostic.config {
