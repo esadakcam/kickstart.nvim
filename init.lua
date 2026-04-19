@@ -1030,7 +1030,6 @@ require('lazy').setup({
         'html',
         'javascript',
         'json',
-        'jsonc',
         'latex',
         'lua',
         'luadoc',
