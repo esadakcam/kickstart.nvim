@@ -815,6 +815,7 @@ require('lazy').setup({
         yamlfix = {
           env = {
             YAMLFIX_LINE_LENGTH = '0',
+            YAMLFIX_SECTION_WHITELINES = '1',
           },
           cwd = function(self, ctx)
             return require('conform.util').root_file {
