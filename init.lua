@@ -793,14 +793,21 @@ require('lazy').setup({
         desc = '[F]ormat buffer',
       },
     },
+    init = function()
+      vim.g.autoformat_on_save = true
+      vim.api.nvim_create_user_command('FormatOnSave', function()
+        vim.g.autoformat_on_save = not vim.g.autoformat_on_save
+        vim.notify('Format on save: ' .. (vim.g.autoformat_on_save and 'ON' or 'OFF'))
+      end, { desc = 'Toggle format on save' })
+    end,
     ---@module 'conform'
     ---@type conform.setupOpts
     opts = {
       notify_on_error = true,
       format_on_save = function(bufnr)
-        -- Disable "format_on_save lsp_fallback" for languages that don't
-        -- have a well standardized coding style. You can add additional
-        -- languages here or re-enable it for the disabled ones.
+        if not vim.g.autoformat_on_save then
+          return nil
+        end
         local disable_filetypes = { c = true, cpp = true }
         if disable_filetypes[vim.bo[bufnr].filetype] then
           return nil
