@@ -64,6 +64,23 @@ Terminals are managed by **toggleterm.nvim**. Each numbered terminal is an indep
 | `<C-j>` | n | Move focus to the lower window |
 | `<C-k>` | n | Move focus to the upper window |
 
+## Folding (nvim-ufo)
+
+Treesitter provider when available, indent otherwise. Bare `z` fold keys (`za`, `zo`, `zR`, …) are disabled — use `<leader>z` instead. Non-fold `z` bindings (`zz`, `zt`, `zb`, etc.) are unchanged.
+
+All standard vim fold commands (`zo`, `zO`, `zc`, `zC`, `za`, `zA`, `zj`, `zk`, `zn`, `zN`, `zd`, `zD`, `zE`, `zf`, `zF`, `zv`, `zx`, `zX`) work as `<leader>z` + the same suffix (e.g. `<leader>zo`). Exception: `zi` (toggle foldenable) is mapped to `<leader>zI`.
+
+| Keys | Mode | Description |
+|------|------|-------------|
+| `<leader>zR` | n | Open all folds (ufo) |
+| `<leader>zM` | n | Close all folds (ufo) |
+| `<leader>zr` | n | Open folds except kinds (ufo) |
+| `<leader>zm` | n | Close folds with level (ufo) |
+| `<leader>zp` | n | Peek folded lines under cursor |
+| `<leader>zi` | n | `:UfoInspect` |
+
+Peek window: `<C-b>`/`<C-f>` page, `<C-u>`/`<C-d>` half-page, `g`/`G` top/bottom, `q` close.
+
 ## Search (Telescope)
 
 | Keys | Mode | Description |
@@ -230,4 +247,5 @@ These aren't keymaps themselves but named prefixes that show a popup menu when p
 | `<leader>s` | Search |
 | `<leader>t` | Toggle |
 | `<leader>h` | Git Hunk |
+| `<leader>z` | Folds (see [Folding](#folding-nvim-ufo)) |
 | `gr` | LSP Actions |

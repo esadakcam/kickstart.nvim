@@ -30,8 +30,8 @@ vim.o.undofile = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
--- Keep signcolumn on by default
-vim.o.signcolumn = 'yes'
+-- Show signcolumn only when there are signs (diagnostics, git hunks, etc.)
+vim.o.signcolumn = 'auto'
 
 -- Decrease update time
 vim.o.updatetime = 250
@@ -415,6 +415,7 @@ require('lazy').setup({
         { '<leader>s', group = '[S]earch', mode = { 'n', 'v' } },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>z', group = 'Folds' },
         { 'gr', group = 'LSP Actions', mode = { 'n' } },
       },
     },
@@ -1069,15 +1070,91 @@ require('lazy').setup({
           local ok2 = pcall(vim.treesitter.start, buf, language)
           if not ok2 then return end
 
-          -- enables treesitter based folds
-          -- for more info on folds see `:help folds`
-          -- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-          -- vim.wo.foldmethod = 'expr'
+          -- Folds are handled by nvim-ufo (treesitter + indent); see ufo plugin spec below.
 
           -- enables treesitter based indentation
           vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         end,
       })
+    end,
+  },
+
+  {
+    'kevinhwang91/nvim-ufo',
+    dependencies = { 'kevinhwang91/promise-async' },
+    event = 'BufReadPost',
+    init = function()
+      vim.o.foldcolumn = '0'
+      vim.o.foldlevel = 99
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+    end,
+    config = function()
+
+      local ufo = require 'ufo'
+      ufo.setup {
+        provider_selector = function() return { 'treesitter', 'indent' } end,
+        preview = {
+          win_config = { border = 'rounded', winhighlight = 'Normal:NormalFloat', winblend = 0 },
+          mappings = { scrollB = '<C-b>', scrollF = '<C-f>', scrollU = '<C-u>', scrollD = '<C-d>', jumpTop = 'g', jumpBot = 'G' },
+        },
+      }
+
+      -- Disable bare z* fold keys; re-expose them under <leader>z via `normal!`.
+      -- { native_key, leader_suffix (nil = same as native), desc }
+      local fold_maps = {
+        { 'zo', nil, 'open under cursor' },
+        { 'zO', nil, 'open under cursor, recursive' },
+        { 'zc', nil, 'close under cursor' },
+        { 'zC', nil, 'close under cursor, recursive' },
+        { 'za', nil, 'toggle under cursor' },
+        { 'zA', nil, 'toggle under cursor, recursive' },
+        { 'zj', nil, 'move to start of next fold' },
+        { 'zk', nil, 'move to end of previous fold' },
+        { 'zn', nil, 'reset foldnestmax from buffer' },
+        { 'zN', nil, 'foldnestmax minus one' },
+        { 'zd', nil, 'delete under cursor' },
+        { 'zD', nil, 'delete under cursor, recursive' },
+        { 'zE', nil, 'eliminate all in window' },
+        { 'zv', nil, 'view cursor line' },
+        { 'zx', nil, 'apply foldlevel, delete extra' },
+        { 'zX', nil, 'apply foldlevel, keep manually closed' },
+        { 'zi', 'I', 'toggle foldenable' },
+      }
+
+      for _, m in ipairs(fold_maps) do
+        local native, suffix, desc = m[1], m[2] or m[1]:sub(2), m[3]
+        vim.keymap.set('n', native, '<Nop>', { silent = true, desc = 'which_key_ignore' })
+        vim.keymap.set('n', '<leader>z' .. suffix, function() vim.cmd('normal! ' .. native) end, { desc = 'Folds: ' .. desc })
+      end
+
+      -- Operator-pending fold creation (zf/zF) needs feedkeys instead of normal!
+      for _, key in ipairs { 'zf', 'zF' } do
+        vim.keymap.set('n', key, '<Nop>', { silent = true, desc = 'which_key_ignore' })
+        vim.keymap.set('n', '<leader>' .. key, function()
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, false, true), 'n', false)
+        end, { desc = 'Folds: create' .. (key == 'zF' and ' for motion' or ' (operator)') })
+      end
+
+      -- Visual-mode fold creation
+      vim.keymap.set('x', 'zf', '<Nop>', { silent = true, desc = 'which_key_ignore' })
+      vim.keymap.set('x', 'zF', '<Nop>', { silent = true, desc = 'which_key_ignore' })
+      vim.keymap.set('x', '<leader>zf', '<Cmd>fold<CR>', { desc = 'Folds: create from selection' })
+
+      -- Ufo-specific keymaps (override native zR/zM/zr/zm with ufo equivalents)
+      local ufo_maps = {
+        { 'zR', ufo.openAllFolds, 'open all' },
+        { 'zM', ufo.closeAllFolds, 'close all' },
+        { 'zr', ufo.openFoldsExceptKinds, 'open except kinds' },
+        { 'zm', ufo.closeFoldsWith, 'close with level' },
+      }
+      for _, m in ipairs(ufo_maps) do
+        vim.keymap.set('n', m[1], '<Nop>', { silent = true, desc = 'which_key_ignore' })
+        vim.keymap.set('n', '<leader>' .. m[1], m[2], { desc = 'Folds: ' .. m[3] })
+      end
+
+      vim.keymap.set('n', '<leader>zp', ufo.peekFoldedLinesUnderCursor, { desc = 'Folds: peek' })
+      vim.keymap.set('n', '<leader>zi', '<cmd>UfoInspect<CR>', { desc = 'Folds: inspect' })
     end,
   },
 
