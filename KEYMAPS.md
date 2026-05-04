@@ -224,6 +224,20 @@ These mappings are active in insert/command mode when the completion menu is vis
 | `<C-e>` | Dismiss the completion menu |
 | `<C-k>` | Toggle function signature help |
 
+## Autopairs (nvim-autopairs)
+
+VSCode-style bracket and quote pairing. Behaves automatically on typing — no explicit normal-mode keymaps. Treesitter-aware, so pairs aren't inserted inside strings/comments where they'd be noisy.
+
+| Keys | Mode | Description |
+|------|------|-------------|
+| `(`, `[`, `{`, `"`, `'`, `` ` `` | i | Insert the opening character and its matching closer; cursor stays in the middle |
+| Same closing char on top of an existing one | i | Jump over the existing closer instead of duplicating it |
+| `<BS>` on an empty pair (e.g. `(\|)`) | i | Delete both the opening and closing characters |
+| `<CR>` between a pair (e.g. `{\|}`) | i | Split into a properly-indented multi-line block |
+| `<M-e>` (Alt+e) | i | Fast-wrap: surround the next chunk with the chosen pair (then press a hint key like `$` for end-of-line, `q`/`w`/… for a target) |
+
+Function-call brackets after completion (`foo` → `foo(\|)`) are inserted by blink.cmp's own `auto_brackets`, not by this plugin.
+
 ## Debug (DAP) — currently not loaded
 
 These keymaps are defined in `lua/kickstart/plugins/debug.lua` but the plugin is **commented out** in `init.lua`. Uncomment `require 'kickstart.plugins.debug'` to enable them.
