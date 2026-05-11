@@ -84,6 +84,7 @@ vim.keymap.set('v', '<D-s>', '<Esc><cmd>write<CR>', { desc = 'Format and save cu
 vim.keymap.set('n', '<leader>w', '<cmd>write<CR>', { desc = '[W]rite/save file' })
 
 if vim.g.neovide then
+  vim.o.guifont = 'JetBrainsMono Nerd Font Mono:h20'
   vim.g.neovide_scale_factor = vim.g.neovide_scale_factor or 1.0
   local function change_scale_factor(delta)
     vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
@@ -97,6 +98,14 @@ if vim.g.neovide then
   vim.keymap.set({ 'n', 'i', 'v' }, '<D-0>', function()
     vim.g.neovide_scale_factor = 1.0
   end, { desc = 'Neovide: reset font size' })
+
+  vim.keymap.set({ 'n', 'v' }, '<D-c>', '"+y', { desc = 'Copy to system clipboard' })
+  vim.keymap.set('n', '<D-v>', '"+p', { desc = 'Paste from system clipboard' })
+  vim.keymap.set('i', '<D-v>', '<C-r>+', { desc = 'Paste from system clipboard' })
+  vim.keymap.set('c', '<D-v>', '<C-r>+', { desc = 'Paste from system clipboard' })
+  vim.keymap.set('v', '<D-v>', '"_d"+P', { desc = 'Paste over selection' })
+  vim.keymap.set({ 'n', 'v' }, '<D-x>', '"+d', { desc = 'Cut to system clipboard' })
+  vim.keymap.set({ 'n', 'i', 'v' }, '<D-a>', '<Esc>ggVG', { desc = 'Select all' })
 end
 
 -- Convenience LSP commands (removed from nvim-lspconfig; Neovim 0.11+ native API has no command equivalents)
