@@ -31,6 +31,16 @@ Leader key: `<Space>`
 | `<D-s>` | n, i, v | Save file (Cmd+S, GUI only) |
 | `<leader>w` | n | Save file |
 
+## Neovide (GUI only)
+
+Active only when running inside Neovide (`vim.g.neovide` is set). They adjust `vim.g.neovide_scale_factor` so the font scales with the window.
+
+| Keys | Mode | Description |
+|------|------|-------------|
+| `<D-k>` | n, i, v | Increase font size (×1.1) |
+| `<D-j>` | n, i, v | Decrease font size (÷1.1) |
+| `<D-0>` | n, i, v | Reset font size to 1.0 |
+
 ## Diagnostics
 
 | Keys | Mode | Description |
