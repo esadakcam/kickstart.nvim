@@ -146,10 +146,11 @@ Files are also auto-formatted on save (except C/C++).
 |------|------|-------------|
 | `<leader>7` | n | Toggle the Diffview panel (shows all uncommitted changes side-by-side) |
 
-### Diffview file panel mappings (inside the file panel)
+### Diffview file panel mappings (inside the file / file history panel)
 
 | Keys | Mode | Description |
 |------|------|-------------|
+| `<leader>e` | n | Jump back to the previous window (diff view) — overrides Diffview's default `focus_files` so `<leader>e` becomes a real toggle between the panel and the diff view |
 | `s` | x | Stage / unstage selected entries |
 | `-` | x | Stage / unstage selected entries |
 | `X` | x | Restore selected entries |

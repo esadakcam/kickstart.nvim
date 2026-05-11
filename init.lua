@@ -296,10 +296,17 @@ require('lazy').setup({
           },
         },
         keymaps = {
+          -- Diffview's default `<leader>e` calls `actions.focus_files`, which only ever
+          -- focuses the file panel. Override it inside the panels so a second press
+          -- jumps back to the previous window (the diff view), giving a real toggle.
           file_panel = {
+            { 'n', '<leader>e', function() vim.cmd 'wincmd p' end, { desc = 'Jump back to the previous window' } },
             { 'x', 's', dv_actions.visual_toggle_stage, { desc = 'Stage / unstage selected entries' } },
             { 'x', '-', dv_actions.visual_toggle_stage, { desc = 'Stage / unstage selected entries' } },
             { 'x', 'X', dv_actions.visual_restore_entry, { desc = 'Restore selected entries' } },
+          },
+          file_history_panel = {
+            { 'n', '<leader>e', function() vim.cmd 'wincmd p' end, { desc = 'Jump back to the previous window' } },
           },
         },
         hooks = {
