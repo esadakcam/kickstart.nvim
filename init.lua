@@ -374,6 +374,7 @@ require('lazy').setup({
     opts = {
       direction = 'float',
       shade_terminals = false,
+      autochdir = true,
       float_opts = {
         border = 'rounded',
         width = function()
