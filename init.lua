@@ -375,6 +375,9 @@ require('lazy').setup({
       direction = 'float',
       shade_terminals = false,
       autochdir = true,
+      -- Don't force the cursor to the bottom on new output when in normal mode.
+      -- Lets you scroll up through TUI app output (e.g. cursor-agent, claude) without it jumping back.
+      auto_scroll = false,
       float_opts = {
         border = 'rounded',
         width = function()
