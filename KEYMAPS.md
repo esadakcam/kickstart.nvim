@@ -249,9 +249,9 @@ VSCode-style bracket and quote pairing. Behaves automatically on typing — no e
 
 Function-call brackets after completion (`foo` → `foo(\|)`) are inserted by blink.cmp's own `auto_brackets`, not by this plugin.
 
-## Debug (DAP) — currently not loaded
+## Debug (DAP)
 
-These keymaps are defined in `lua/kickstart/plugins/debug.lua` but the plugin is **commented out** in `init.lua`. Uncomment `require 'kickstart.plugins.debug'` to enable them.
+Go debugging is configured through `lua/kickstart/plugins/debug.lua` with `nvim-dap`, `nvim-dap-ui`, `mason-nvim-dap`, and `nvim-dap-go`. Mason installs the `delve` debug adapter automatically.
 
 | Keys | Mode | Description |
 |------|------|-------------|

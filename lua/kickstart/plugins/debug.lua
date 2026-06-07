@@ -46,9 +46,9 @@ return {
       -- reasonable debug configurations
       automatic_installation = true,
 
-      -- You can provide additional configuration to the handlers,
-      -- see mason-nvim-dap README for more information
-      handlers = {},
+      -- Let nvim-dap-go own Go launch configurations so the picker
+      -- does not show duplicate generic "Delve:" entries.
+      handlers = nil,
 
       -- You'll need to check that you have the required things installed
       -- online, please don't ask me how to install them :)
