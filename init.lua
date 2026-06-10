@@ -86,6 +86,31 @@ vim.keymap.set('n', '<leader>w', '<cmd>write<CR>', { desc = '[W]rite/save file' 
 if vim.g.neovide then
   vim.o.guifont = 'JetBrainsMono Nerd Font Mono:h20'
   vim.g.neovide_scale_factor = vim.g.neovide_scale_factor or 1.0
+
+  local cursor_animation_defaults = {
+    animation_length = vim.g.neovide_cursor_animation_length or 0.13,
+    trail_size = vim.g.neovide_cursor_trail_size or 0.8,
+  }
+  local cursor_animations_enabled = true
+
+  local function set_cursor_animations(enabled)
+    cursor_animations_enabled = enabled
+    vim.g.neovide_cursor_animation_length = enabled and cursor_animation_defaults.animation_length or 0.0
+    vim.g.neovide_cursor_trail_size = enabled and cursor_animation_defaults.trail_size or 0.0
+  end
+
+  set_cursor_animations(true)
+
+  vim.api.nvim_create_user_command('ToggleCursorAnimations', function()
+    local enabled = not cursor_animations_enabled
+
+    set_cursor_animations(enabled)
+    vim.notify(('Neovide cursor animations %s'):format(enabled and 'enabled' or 'disabled'))
+  end, {
+    nargs = 0,
+    desc = 'Toggle Neovide cursor animations',
+  })
+
   local function change_scale_factor(delta)
     vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
   end

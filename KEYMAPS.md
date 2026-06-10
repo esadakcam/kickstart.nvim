@@ -32,6 +32,7 @@ These are useful `:` commands configured directly or surfaced by mapped plugins.
 | `:LspInfo`                                                            | Show native LSP client info via `:checkhealth vim.lsp`.                                                        |
 | `:LspRestart`                                                         | Restart LSP clients attached to the current buffer.                                                            |
 | `:LspStop`                                                            | Stop LSP clients attached to the current buffer.                                                               |
+| `:ToggleCursorAnimations`                                             | Toggle Neovide cursor animations.                                                                              |
 | `:DiffviewOpen`                                                       | Open the Diffview panel for Git changes.                                                                       |
 | `:DiffviewClose`                                                      | Close the current Diffview panel.                                                                              |
 | `:Neotree reveal`                                                     | Reveal the current file in NeoTree.                                                                            |
