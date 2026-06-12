@@ -8,6 +8,8 @@ return {
     config = function()
       local lint = require 'lint'
       lint.linters_by_ft = {
+        java = { 'checkstyle' },
+        kotlin = { 'ktlint' },
         yaml = { 'yamllint' },
         ['yaml.ansible'] = { 'yamllint' },
       }

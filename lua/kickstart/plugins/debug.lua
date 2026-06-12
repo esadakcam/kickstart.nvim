@@ -46,15 +46,22 @@ return {
       -- reasonable debug configurations
       automatic_installation = true,
 
-      -- Let nvim-dap-go own Go launch configurations so the picker
-      -- does not show duplicate generic "Delve:" entries.
-      handlers = nil,
-
       -- You'll need to check that you have the required things installed
       -- online, please don't ask me how to install them :)
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
         'delve',
+        'kotlin',
+      },
+
+      handlers = {
+        function(config)
+          -- nvim-dap-go owns Delve setup, and nvim-jdtls owns Java DAP setup.
+          if config.name == 'delve' or config.name == 'javadbg' or config.name == 'javatest' then
+            return
+          end
+          require('mason-nvim-dap').default_setup(config)
+        end,
       },
     }
 

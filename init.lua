@@ -150,7 +150,7 @@ vim.api.nvim_create_user_command('LspRestart', function()
   local names = {}
   for _, c in ipairs(clients) do
     table.insert(names, c.name)
-    vim.lsp.stop_client(c.id)
+    c:stop()
   end
   vim.defer_fn(function()
     for _, name in ipairs(names) do
@@ -167,7 +167,7 @@ vim.api.nvim_create_user_command('LspStop', function()
     return
   end
   for _, c in ipairs(clients) do
-    vim.lsp.stop_client(c.id)
+    c:stop()
     vim.notify('Stopped: ' .. c.name)
   end
 end, { desc = 'Stop LSP clients attached to the current buffer' })
@@ -278,8 +278,6 @@ require('lazy').setup({
       },
     },
     config = function()
-      local actions = require 'diffview.actions'
-
       local dv_actions = require 'custom.diffview-actions'
 
       local function apply_diff_hl()
@@ -778,6 +776,11 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         gopls = {},
+        kotlin_language_server = {
+          init_options = {
+            storagePath = vim.fn.stdpath 'cache' .. '/kotlin-language-server',
+          },
+        },
         -- pyright = {},
         -- rust_analyzer = {},
         --
@@ -795,7 +798,18 @@ require('lazy').setup({
               if path ~= vim.fn.stdpath 'config' and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc')) then return end
             end
 
-            client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+            local settings = client.config.settings
+            if type(settings) ~= 'table' then
+              settings = {}
+              client.config.settings = settings
+            end
+
+            local lua_settings = settings.Lua
+            if type(lua_settings) ~= 'table' then
+              lua_settings = {}
+            end
+
+            settings.Lua = vim.tbl_deep_extend('force', lua_settings, {
               runtime = {
                 version = 'LuaJIT',
                 path = { 'lua/?.lua', 'lua/?/init.lua' },
@@ -827,6 +841,13 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         -- You can add other tools here that you want Mason to install
+        'jdtls',
+        'java-debug-adapter',
+        'java-test',
+        'checkstyle',
+        'google-java-format',
+        'ktlint',
+        'kotlin-debug-adapter',
         'prettierd',
         'prettier',
         'goimports',
@@ -842,6 +863,88 @@ require('lazy').setup({
       for name, server in pairs(servers) do
         vim.lsp.config(name, server)
         vim.lsp.enable(name)
+      end
+    end,
+  },
+
+  {
+    'mfussenegger/nvim-jdtls',
+    ft = 'java',
+    dependencies = { 'mfussenegger/nvim-dap' },
+    config = function()
+      local jdtls = require 'jdtls'
+
+      local function start_jdtls(bufnr)
+        local root_markers = {
+          'gradlew',
+          'mvnw',
+          'settings.gradle',
+          'settings.gradle.kts',
+          'build.gradle',
+          'build.gradle.kts',
+          'pom.xml',
+          '.git',
+        }
+        local root_dir = vim.fs.root(bufnr, root_markers) or vim.fn.getcwd()
+        local project_name = vim.fs.basename(root_dir)
+        local workspace_dir = vim.fn.stdpath 'data' .. '/jdtls-workspace/' .. project_name
+        local mason_packages = vim.fn.stdpath 'data' .. '/mason/packages'
+        local bundles = {}
+
+        local java_debug_bundle = vim.fn.glob(mason_packages .. '/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar', true)
+        if java_debug_bundle ~= '' then
+          table.insert(bundles, java_debug_bundle)
+        end
+
+        local java_test_bundles = vim.split(vim.fn.glob(mason_packages .. '/java-test/extension/server/*.jar', true), '\n', { trimempty = true })
+        local excluded_test_bundles = {
+          ['com.microsoft.java.test.runner-jar-with-dependencies.jar'] = true,
+          ['jacocoagent.jar'] = true,
+        }
+        for _, bundle in ipairs(java_test_bundles) do
+          if not excluded_test_bundles[vim.fn.fnamemodify(bundle, ':t')] then
+            table.insert(bundles, bundle)
+          end
+        end
+
+        local function map(keys, func, desc, mode)
+          vim.keymap.set(mode or 'n', keys, func, { buffer = bufnr, desc = 'Java: ' .. desc })
+        end
+
+        local config = {
+          cmd = { 'jdtls', '-data', workspace_dir },
+          root_dir = root_dir,
+          init_options = {
+            bundles = bundles,
+          },
+          settings = {
+            java = {},
+          },
+          on_attach = function()
+            jdtls.setup_dap { hotcodereplace = 'auto' }
+
+            map('<leader>jo', jdtls.organize_imports, 'Organize imports')
+            map('<leader>jv', jdtls.extract_variable, 'Extract variable')
+            map('<leader>jv', function() jdtls.extract_variable(true) end, 'Extract variable', 'x')
+            map('<leader>jc', jdtls.extract_constant, 'Extract constant')
+            map('<leader>jc', function() jdtls.extract_constant(true) end, 'Extract constant', 'x')
+            map('<leader>jm', function() jdtls.extract_method(true) end, 'Extract method', 'x')
+            map('<leader>jt', jdtls.test_nearest_method, 'Debug nearest test')
+            map('<leader>jT', jdtls.test_class, 'Debug test class')
+          end,
+        }
+
+        jdtls.start_or_attach(config)
+      end
+
+      vim.api.nvim_create_autocmd('FileType', {
+        group = vim.api.nvim_create_augroup('jdtls', { clear = true }),
+        pattern = 'java',
+        callback = function(args) start_jdtls(args.buf) end,
+      })
+
+      if vim.bo.filetype == 'java' then
+        start_jdtls(vim.api.nvim_get_current_buf())
       end
     end,
   },
@@ -914,6 +1017,8 @@ require('lazy').setup({
         typescript = { 'prettierd', 'prettier', stop_after_first = true },
         typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
         markdown = { 'prettierd', 'prettier', stop_after_first = true },
+        java = { 'google-java-format' },
+        kotlin = { 'ktlint' },
         go = { 'goimports', 'gofumpt' },
         html = { 'prettierd', 'prettier', stop_after_first = true },
         yaml = { 'yamlfix', 'yaml_brace_spacer' },
@@ -1102,7 +1207,9 @@ require('lazy').setup({
         'gosum',
         'html',
         'javascript',
+        'java',
         'json',
+        'kotlin',
         'latex',
         'lua',
         'luadoc',
@@ -1260,8 +1367,6 @@ require('lazy').setup({
         desc = '[T]oggle Render [M]arkdown',
       },
     },
-    ---@module 'render-markdown'
-    ---@type render.md.UserConfig
     opts = {},
   },
 
