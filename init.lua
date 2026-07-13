@@ -343,16 +343,23 @@ require('lazy').setup({
           },
         },
         keymaps = {
-          -- Diffview's default `<leader>e` calls `actions.focus_files`, which only ever
-          -- focuses the file panel. Override it inside the panels so a second press
-          -- jumps back to the previous window (the diff view), giving a real toggle.
+          -- Use `<leader>E` for toggling the file panel within Diffview. Disable the
+          -- plugin's default `<leader>b` binding so it remains available elsewhere.
+          view = {
+            { 'n', '<leader>E', actions.toggle_files, { desc = 'Toggle the Diffview file panel' } },
+            { 'n', '<leader>b', false },
+          },
           file_panel = {
+            { 'n', '<leader>E', actions.toggle_files, { desc = 'Toggle the Diffview file panel' } },
+            { 'n', '<leader>b', false },
             { 'n', '<leader>e', function() vim.cmd 'wincmd p' end, { desc = 'Jump back to the previous window' } },
             { 'x', 's', dv_actions.visual_toggle_stage, { desc = 'Stage / unstage selected entries' } },
             { 'x', '-', dv_actions.visual_toggle_stage, { desc = 'Stage / unstage selected entries' } },
             { 'x', 'X', dv_actions.visual_restore_entry, { desc = 'Restore selected entries' } },
           },
           file_history_panel = {
+            { 'n', '<leader>E', actions.toggle_files, { desc = 'Toggle the Diffview file panel' } },
+            { 'n', '<leader>b', false },
             { 'n', '<leader>e', function() vim.cmd 'wincmd p' end, { desc = 'Jump back to the previous window' } },
           },
         },
@@ -798,7 +805,7 @@ require('lazy').setup({
         -- clangd = {},
         gopls = {},
         -- pyright = {},
-        -- rust_analyzer = {},
+        rust_analyzer = {},
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
@@ -934,6 +941,7 @@ require('lazy').setup({
         typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
         markdown = { 'prettierd', 'prettier', stop_after_first = true },
         go = { 'goimports', 'gofumpt' },
+        rust = { 'rustfmt' },
         html = { 'prettierd', 'prettier', stop_after_first = true },
         yaml = { 'yamlfix', 'yaml_brace_spacer' },
         ['yaml.ansible'] = { 'yamlfix', 'yaml_brace_spacer' },

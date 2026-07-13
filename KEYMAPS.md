@@ -172,6 +172,7 @@ Files are also auto-formatted on save (except C/C++). Use `:FormatOnSave` to tog
 | Keys        | Mode | Description                                                            |
 | ----------- | ---- | ---------------------------------------------------------------------- |
 | `<leader>7` | n    | Toggle the Diffview panel (shows all uncommitted changes side-by-side) |
+| `<leader>E` | n    | Toggle the Diffview file panel                                          |
 
 ### Diffview file panel mappings (inside the file / file history panel)
 
