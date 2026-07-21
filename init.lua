@@ -886,7 +886,7 @@ require('lazy').setup({
     },
     init = function()
       vim.g.autoformat_on_save = true
-      vim.api.nvim_create_user_command('FormatOnSave', function()
+      vim.api.nvim_create_user_command('ToggleFormatOnSave', function()
         vim.g.autoformat_on_save = not vim.g.autoformat_on_save
         vim.notify('Format on save: ' .. (vim.g.autoformat_on_save and 'ON' or 'OFF'))
       end, { desc = 'Toggle format on save' })

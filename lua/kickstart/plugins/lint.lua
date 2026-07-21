@@ -5,12 +5,32 @@ return {
   { -- Linting
     'mfussenegger/nvim-lint',
     event = { 'BufReadPre', 'BufNewFile' },
+    cmd = { 'ToggleLint' },
     config = function()
       local lint = require 'lint'
       lint.linters_by_ft = {
         yaml = { 'yamllint' },
         ['yaml.ansible'] = { 'yamllint' },
       }
+      vim.g.linting_enabled = true
+
+      local function clear_lint_diagnostics(bufnr)
+        for _, linters in pairs(lint.linters_by_ft) do
+          for _, linter_name in ipairs(linters) do
+            vim.diagnostic.reset(lint.get_namespace(linter_name), bufnr)
+          end
+        end
+      end
+
+      vim.api.nvim_create_user_command('ToggleLint', function()
+        vim.g.linting_enabled = not vim.g.linting_enabled
+        if vim.g.linting_enabled then
+          if vim.bo.modifiable then lint.try_lint() end
+        else
+          clear_lint_diagnostics(0)
+        end
+        vim.notify('Linting: ' .. (vim.g.linting_enabled and 'ON' or 'OFF'))
+      end, { desc = 'Toggle linting' })
 
       -- To allow other plugins to add linters to require('lint').linters_by_ft,
       -- instead set linters_by_ft like this:
@@ -53,7 +73,7 @@ return {
           -- Only run the linter in buffers that you can modify in order to
           -- avoid superfluous noise, notably within the handy LSP pop-ups that
           -- describe the hovered symbol using Markdown.
-          if vim.bo.modifiable then lint.try_lint() end
+          if vim.g.linting_enabled and vim.bo.modifiable then lint.try_lint() end
         end,
       })
     end,

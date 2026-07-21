@@ -27,7 +27,8 @@ These are useful `:` commands configured directly or surfaced by mapped plugins.
 
 | Command                                                               | Description                                                                                                    |
 | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `:FormatOnSave`                                                       | Toggle auto-formatting on save globally. This is the command currently configured for "toggle format on save". |
+| `:ToggleFormatOnSave`                                                 | Toggle auto-formatting on save globally.                                                                       |
+| `:ToggleLint`                                                         | Toggle linting globally.                                                                                       |
 | `:ConformInfo`                                                        | Show conform.nvim formatter status and diagnostics.                                                            |
 | `:LspInfo`                                                            | Show native LSP client info via `:checkhealth vim.lsp`.                                                        |
 | `:LspRestart`                                                         | Restart LSP clients attached to the current buffer.                                                            |
@@ -165,7 +166,7 @@ Peek window: `<C-b>`/`<C-f>` page, `<C-u>`/`<C-d>` half-page, `g`/`G` top/bottom
 | ----------- | ---- | ------------------------------------------------------------------------------------------------ |
 | `<leader>f` | n, v | Format the current buffer. Falls back to LSP formatting if no dedicated formatter is configured. |
 
-Files are also auto-formatted on save (except C/C++). Use `:FormatOnSave` to toggle that behavior.
+Files are also auto-formatted on save (except C/C++). Use `:ToggleFormatOnSave` to toggle that behavior.
 
 ## Git — Diffview
 
