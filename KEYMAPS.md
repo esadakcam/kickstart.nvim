@@ -41,13 +41,13 @@ These are useful `:` commands configured directly or surfaced by mapped plugins.
 | `:Neotree focus`                                                      | Focus the NeoTree window.                                                                                      |
 | `:ToggleTerm direction=float`                                         | Toggle the last-used floating terminal.                                                                        |
 | `:1ToggleTerm direction=float` through `:5ToggleTerm direction=float` | Toggle floating terminal slots 1 through 5.                                                                    |
+| `:GrugFar`                                                            | Open a grug-far.nvim search/replace buffer.                                                                   |
+| `:GrugFarWithin`                                                      | Open grug-far.nvim constrained to the current visual selection range.                                          |
 | `:RenderMarkdown toggle`                                              | Toggle rendered Markdown for the current buffer.                                                               |
 | `:UfoInspect`                                                         | Inspect fold provider/status information from nvim-ufo.                                                        |
 | `:Lazy`                                                               | Open the lazy.nvim plugin manager.                                                                             |
-
-s adsag asd
-| `:Lazy sync` | Install, clean, and restore plugins to match `lazy-lock.json` without choosing newer dependency versions. |
-| `:Lazy update` | Update installed plugins through lazy.nvim. |
+| `:Lazy sync`                                                          | Install, clean, and restore plugins to match `lazy-lock.json` without choosing newer dependency versions.      |
+| `:Lazy update`                                                        | Update installed plugins through lazy.nvim.                                                                    |
 
 ## General
 
@@ -144,6 +144,19 @@ Peek window: `<C-b>`/`<C-f>` page, `<C-u>`/`<C-d>` half-page, `g`/`G` top/bottom
 | ---- | ------------------------------- |
 | `t`  | Open result in a new tab        |
 | `s`  | Open result in a vertical split |
+
+## Search and Replace (grug-far.nvim)
+
+External mappings that open grug-far.nvim. Inside the grug-far buffer, use the plugin's visible local key hints for actions such as replace, sync, quickfix, history, and close.
+
+| Keys         | Mode | Description                                                                |
+| ------------ | ---- | -------------------------------------------------------------------------- |
+| `<leader>sR` | n    | Search and replace across the project                                      |
+| `<leader>sR` | x    | Search and replace with the visual selection prefilled as the search       |
+| `<leader>sW` | n    | Search and replace the word under the cursor across the project            |
+| `<leader>sF` | n    | Search and replace in the current file                                     |
+| `<leader>sF` | x    | Search and replace in the current file with the visual selection prefilled |
+| `<leader>sv` | x    | Search and replace only within the selected visual range                   |
 
 ## LSP (buffer-local, active when a language server attaches)
 

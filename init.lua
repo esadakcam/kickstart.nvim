@@ -678,6 +678,73 @@ require('lazy').setup({
     end,
   },
 
+  { -- Search and replace across files
+    'MagicDuck/grug-far.nvim',
+    cmd = { 'GrugFar', 'GrugFarWithin' },
+    dependencies = {
+      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+    },
+    keys = {
+      {
+        '<leader>sR',
+        function() require('grug-far').open { transient = true } end,
+        mode = 'n',
+        desc = '[S]earch and [R]eplace',
+      },
+      {
+        '<leader>sR',
+        function() require('grug-far').with_visual_selection { transient = true } end,
+        mode = 'x',
+        desc = '[S]earch and [R]eplace selection',
+      },
+      {
+        '<leader>sW',
+        function()
+          require('grug-far').open {
+            transient = true,
+            prefills = { search = vim.fn.expand '<cword>' },
+          }
+        end,
+        desc = '[S]earch and replace current [W]ord',
+      },
+      {
+        '<leader>sF',
+        function()
+          require('grug-far').open {
+            transient = true,
+            prefills = { paths = vim.fn.expand '%' },
+          }
+        end,
+        desc = '[S]earch and replace current [F]ile',
+      },
+      {
+        '<leader>sF',
+        function()
+          require('grug-far').with_visual_selection {
+            transient = true,
+            prefills = { paths = vim.fn.expand '%' },
+          }
+        end,
+        mode = 'x',
+        desc = '[S]earch and replace selection in current [F]ile',
+      },
+      {
+        '<leader>sv',
+        function()
+          require('grug-far').open {
+            transient = true,
+            visualSelectionUsage = 'operate-within-range',
+          }
+        end,
+        mode = 'x',
+        desc = '[S]earch and replace within [V]isual range',
+      },
+    },
+    opts = {
+      headerMaxWidth = 80,
+    },
+  },
+
   -- LSP Plugins
   {
     -- Main LSP Configuration
