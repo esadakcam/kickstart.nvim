@@ -380,12 +380,6 @@ require('lazy').setup({
     version = '*',
     keys = {
       {
-        '<leader>tt',
-        function() vim.cmd '1ToggleTerm direction=float' end,
-        mode = { 'n', 't' },
-        desc = '[T]oggle floating [T]erminal 1',
-      },
-      {
         '<leader>t1',
         function() vim.cmd '1ToggleTerm direction=float' end,
         mode = { 'n', 't' },

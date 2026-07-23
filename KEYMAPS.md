@@ -83,7 +83,6 @@ Active only when running inside Neovide (`vim.g.neovide` is set). They adjust `v
 | `<C-g>`      | t    | Exit terminal mode         |
 | `jk`         | t    | Exit terminal mode         |
 | `kj`         | t    | Exit terminal mode         |
-| `<leader>tt` | n, t | Toggle floating terminal 1 |
 | `<leader>t1` | n, t | Toggle floating terminal 1 |
 | `<leader>t2` | n, t | Toggle floating terminal 2 |
 | `<leader>t3` | n, t | Toggle floating terminal 3 |
