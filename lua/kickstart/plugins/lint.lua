@@ -12,6 +12,7 @@ return {
         yaml = { 'yamllint' },
         ['yaml.ansible'] = { 'yamllint' },
       }
+      table.insert(lint.linters.yamllint.args, 1, '--config-data={extends: default, rules: {line-length: disable}}')
       vim.g.linting_enabled = true
 
       local function clear_lint_diagnostics(bufnr)

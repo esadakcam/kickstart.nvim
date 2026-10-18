@@ -984,14 +984,6 @@ require('lazy').setup({
             }(self, ctx)
           end,
         },
-        yaml_brace_spacer = {
-          command = 'perl',
-          args = {
-            '-pe',
-            [=[s/\[ *\]/[ ]/g; s/\[ +([^ \]])/[$1/g; s/([^ \[]) +\]/$1]/g; s/(?<!\{)\{(?!\{|%) *([^ }])/{ $1/g; s/([^ {]) *(?<!%|\})\}(?!\})/$1 }/g; s/(?<!\{)\{(?!\{) *\}(?!\})/{ }/g;]=],
-          },
-          stdin = true,
-        },
       },
       formatters_by_ft = {
         lua = { 'stylua' },
@@ -1004,8 +996,8 @@ require('lazy').setup({
         go = { 'goimports', 'gofumpt' },
         rust = { 'rustfmt' },
         html = { 'prettierd', 'prettier', stop_after_first = true },
-        yaml = { 'yamlfix', 'yaml_brace_spacer' },
-        ['yaml.ansible'] = { 'yamlfix', 'yaml_brace_spacer' },
+        yaml = { 'yamlfix' },
+        ['yaml.ansible'] = { 'yamlfix' },
         tex = { 'latexindent' },
         latex = { 'latexindent' },
         -- Conform can also run multiple formatters sequentially
