@@ -94,6 +94,8 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter' }, {
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
+vim.keymap.set({ 'n', 'x' }, '<C-b>', '<C-v>', { desc = 'Visual block mode' })
+
 vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Exit insert mode' })
 vim.keymap.set('i', 'kj', '<Esc>', { desc = 'Exit insert mode' })
 

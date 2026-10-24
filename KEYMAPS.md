@@ -17,8 +17,8 @@ Leader key: `<Space>`
 | `<BS>`     | Backspace key                                                                    |
 | n          | Normal mode                                                                      |
 | i          | Insert mode                                                                      |
-| v          | Visual mode                                                                      |
-| x          | Visual + Select mode                                                             |
+| v          | Visual + Select mode                                                             |
+| x          | Visual mode                                                                      |
 | t          | Terminal mode                                                                    |
 
 ## Commands
@@ -54,6 +54,7 @@ These are useful `:` commands configured directly or surfaced by mapped plugins.
 | Keys        | Mode    | Description                 |
 | ----------- | ------- | --------------------------- |
 | `<Esc>`     | n       | Clear search highlights     |
+| `<C-b>`     | n, x    | Visual block mode (Ctrl+B)  |
 | `jk`        | i       | Exit insert mode            |
 | `kj`        | i       | Exit insert mode            |
 | `<D-s>`     | n, i, v | Save file (Cmd+S, GUI only) |
