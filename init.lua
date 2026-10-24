@@ -152,7 +152,7 @@ if vim.g.neovide then
   vim.keymap.set('t', '<D-v>', function()
     vim.api.nvim_paste(vim.fn.getreg '+', false, -1)
   end, { desc = 'Paste from system clipboard' })
-  vim.keymap.set('v', '<D-v>', '"_d"+P', { desc = 'Paste over selection' })
+  vim.keymap.set('v', '<D-v>', '"+P', { desc = 'Paste over selection' })
   vim.keymap.set({ 'n', 'v' }, '<D-x>', '"+d', { desc = 'Cut to system clipboard' })
   vim.keymap.set({ 'n', 'i', 'v' }, '<D-a>', '<Esc>ggVG', { desc = 'Select all' })
 end
@@ -233,9 +233,9 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 vim.keymap.set('x', 'p', function()
   local saved = vim.fn.getreg '"'
   local saved_type = vim.fn.getregtype '"'
-  vim.cmd 'normal! "dd'
+  vim.cmd 'normal! p'
+  vim.fn.setreg('d', vim.fn.getreg '"', vim.fn.getregtype '"')
   vim.fn.setreg('"', saved, saved_type)
-  vim.cmd 'normal! P'
 end, { desc = 'Paste without overwriting register, deleted text goes to "d register' })
 
 -- Delete/change send to register "d" instead of default, keeping yanked content safe
